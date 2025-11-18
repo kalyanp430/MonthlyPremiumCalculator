@@ -1,0 +1,41 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div>
+        <label>Name</label>
+        <input formControlName="name" />
+    </div>
+
+    <div>
+        <label>Age Next Birthday</label>
+        <input type="number" formControlName="ageNextBirthday" />
+    </div>
+
+    <div>
+        <label>Date of Birth (mm/YYYY)</label>
+        <input placeholder="mm/YYYY" formControlName="dateOfBirth" />
+    </div>
+
+    <div>
+        <label>Usual Occupation</label>
+        <select formControlName="usualOccupation">
+            <option value="" disabled>Select occupation</option>
+            <option *ngFor="let o of occupations" [value]="o">{{o}}</option>
+        </select>
+    </div>
+
+    <div>
+        <label>Death – Sum Insured</label>
+        <input type="number" formControlName="deathSumInsured" />
+    </div>
+
+    <button type="submit" [disabled]="form.invalid">Calculate</button>
+</form>
+
+<div *ngIf="calculatedMonthly !== undefined">
+    <h3>Client Monthly Premium: {{calculatedMonthly}}</h3>
+</div>
+
+<div *ngIf="apiResult">
+    <h3>API Monthly Premium: {{apiResult.monthlyPremium}}</h3>
+</div>
+
+<div *ngIf="apiError" style="color:red">{{apiError}}</div>

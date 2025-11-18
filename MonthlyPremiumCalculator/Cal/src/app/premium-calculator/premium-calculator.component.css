@@ -1,0 +1,19 @@
+form div {
+    margin-bottom: 10px;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+}
+
+input,
+select {
+    width: 250px;
+    padding: 6px;
+}
+
+button {
+    padding: 8px 12px;
+    margin-top: 10px;
+}
