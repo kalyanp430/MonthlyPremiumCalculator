@@ -1,0 +1,63 @@
+CREATE TABLE tblRating
+(
+    RatingId     INT IDENTITY(1,1) PRIMARY KEY,
+    RatingName   NVARCHAR(50) NOT NULL UNIQUE,
+    Factor       DECIMAL(9,4) NOT NULL CHECK (Factor > 0)  -- allow fractional factor like 1.5, 31.75
+);
+GO
+
+CREATE TABLE tblOccupation
+(
+    OccupationId   INT IDENTITY(1,1) PRIMARY KEY,
+    OccupationName NVARCHAR(100) NOT NULL UNIQUE,
+    RatingId       INT NOT NULL REFERENCES tblRating(RatingId)
+);
+GO
+
+CREATE TABLE tblMember
+(
+    MemberId            INT IDENTITY(1,1) PRIMARY KEY,
+    FullName            NVARCHAR(200) NOT NULL,
+    AgeNextBirthday     TINYINT NOT NULL CHECK (AgeNextBirthday BETWEEN 0 AND 150),
+    DateOfBirth         DATE NULL, -- store as first day of mm/YYYY if only mm/YYYY given
+    CreatedAt           DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME()
+);
+GO
+
+CREATE TABLE tblPremiumCalculation
+(
+    PremiumId           BIGINT IDENTITY(1,1) PRIMARY KEY,
+    RequestName         NVARCHAR(200) NOT NULL,
+    AgeNextBirthday     TINYINT NOT NULL CHECK (AgeNextBirthday BETWEEN 0 AND 150),
+    DateOfBirthRaw      NVARCHAR(7) NOT NULL, -- mm/YYYY as provided
+    DateOfBirth         DATE NULL,            -- parsed date (first day of month)
+    OccupationId        INT NOT NULL REFERENCES tblOccupation(OccupationId),
+    RatingId            INT NOT NULL REFERENCES tblRating(RatingId),
+    RatingFactor        DECIMAL(9,4) NOT NULL,
+    DeathSumInsured     DECIMAL(18,2) NOT NULL CHECK (DeathSumInsured > 0),
+    MonthlyPremium      DECIMAL(18,2) NOT NULL, -- computed
+    CalculatedAt        DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME()
+);
+GO
+
+--Seed Rating and Occupation data
+INSERT INTO tblRating (RatingName, Factor) VALUES
+('Professional', 1.5),
+('White Collar', 2.25),
+('Light Manual', 11.50),
+('Heavy Manual', 31.75);
+
+
+INSERT INTO tblOccupation (OccupationName, RatingId)
+SELECT occ, r.RatingId
+FROM (VALUES
+    ('Cleaner','Light Manual'),
+    ('Doctor','Professional'),
+    ('Author','White Collar'),
+    ('Farmer','Heavy Manual'),
+    ('Mechanic','Heavy Manual'),
+    ('Florist','Light Manual'),
+    ('Other','Heavy Manual')
+) AS v(occ, rating)
+JOIN tblRating r ON r.RatingName = v.rating;
+GO
