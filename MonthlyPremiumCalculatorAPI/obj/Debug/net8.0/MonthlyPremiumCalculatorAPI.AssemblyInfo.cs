@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MonthlyPremiumCalculatorAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8e23cc2e9d3517ec8b0298ae20e2e40ae9db8c80")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+291d2db92cf3af75120c824035df533cc2a7208c")]
 [assembly: System.Reflection.AssemblyProductAttribute("MonthlyPremiumCalculatorAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MonthlyPremiumCalculatorAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
